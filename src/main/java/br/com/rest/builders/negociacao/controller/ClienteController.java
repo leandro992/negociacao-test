@@ -21,7 +21,7 @@ import java.util.Map;
 import java.util.Optional;
 
 @RestController
-@RequestMapping(value = "/cliente", produces = MediaType.APPLICATION_JSON_VALUE)
+@RequestMapping(value = "/cliente")
 public class ClienteController {
 
 
@@ -45,13 +45,13 @@ public class ClienteController {
 
 
     @ResponseStatus(HttpStatus.CREATED)
-    @PostMapping
+    @PostMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public void save(@RequestBody ClienteRequestDTO cliente){
          clienteService.save(cliente);
     }
 
 
-    @PutMapping
+    @PutMapping( produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Cliente> update(@RequestBody Cliente cliente, @RequestHeader Long clienteId){
         return clienteService.update(cliente, clienteId);
     }
@@ -65,7 +65,7 @@ public class ClienteController {
     }
 
 
-    @PatchMapping
+    @PatchMapping(produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<?> updateParcial(@RequestHeader String clienteId, @RequestBody Map<String,Object> camposOrigem){
         Long clienteIdLong = Long.valueOf(clienteId);
         Optional<Cliente> consult = clienteService.consult(clienteIdLong);

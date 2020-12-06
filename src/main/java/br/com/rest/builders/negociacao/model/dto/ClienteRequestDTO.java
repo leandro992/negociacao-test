@@ -18,8 +18,6 @@ public class ClienteRequestDTO {
 
     private String cpf;
 
-    private String idade;
-
     private LocalDate dataNascimento;
 
     private BigDecimal valorDivida;
