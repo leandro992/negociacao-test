@@ -1,10 +1,9 @@
-package br.com.rest.builders.negociacao.controller;
+package br.com.rest.negociacao.controller;
 
-import br.com.rest.builders.negociacao.model.Cliente;
-import br.com.rest.builders.negociacao.model.dto.ClienteRequestDTO;
-import br.com.rest.builders.negociacao.model.dto.ClienteResponseDTO;
-import br.com.rest.builders.negociacao.service.ClienteService;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import br.com.rest.negociacao.model.Cliente;
+import br.com.rest.negociacao.model.dto.ClienteRequestDTO;
+import br.com.rest.negociacao.model.dto.ClienteResponseDTO;
+import br.com.rest.negociacao.service.ClienteService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -12,12 +11,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.util.ReflectionUtils;
 import org.springframework.web.bind.annotation.*;
 
-import java.lang.reflect.Field;
 import java.util.List;
-import java.util.Map;
 import java.util.Optional;
 
 @RestController
@@ -60,42 +56,11 @@ public class ClienteController {
     @DeleteMapping
     public ResponseEntity<Cliente> delete(@RequestHeader Long clienteId){
         Boolean delete = clienteService.delete(clienteId);
-            if (delete) return ResponseEntity.ok().build();
+            if (delete){
+                return ResponseEntity.ok().build();
+            }
             return ResponseEntity.notFound().build();
     }
-
-
-    @PatchMapping(produces = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<?> updateParcial(@RequestHeader String clienteId, @RequestBody Map<String,Object> camposOrigem){
-        Long clienteIdLong = Long.valueOf(clienteId);
-        Optional<Cliente> consult = clienteService.consult(clienteIdLong);
-
-        if (consult.isEmpty()){
-            return ResponseEntity.notFound().build();
-        }
-        merge(camposOrigem, consult.get());
-        return update(consult.get(),clienteIdLong);
-    }
-
-
-    private void merge(Map<String, Object> camposOrigem, Cliente clienteDestino){
-        ObjectMapper objectMapper = new ObjectMapper();
-
-        Cliente cliente = objectMapper.convertValue(camposOrigem, Cliente.class);
-
-        camposOrigem.forEach((nomePropriedade, valorPropriedade) ->{
-            Field field = ReflectionUtils.findField(Cliente.class, nomePropriedade);
-            field.setAccessible(Boolean.TRUE);
-
-            Object novoValor = ReflectionUtils.getField(field, cliente);
-
-            ReflectionUtils.setField(field, clienteDestino, novoValor);
-        });
-    }
-
-
-
-
 
 
 }

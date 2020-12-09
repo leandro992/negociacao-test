@@ -1,4 +1,4 @@
-package br.com.rest.builders.negociacao.model;
+package br.com.rest.negociacao.model;
 
 import lombok.*;
 

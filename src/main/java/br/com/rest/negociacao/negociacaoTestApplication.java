@@ -1,4 +1,4 @@
-package br.com.rest.builders.negociacao;
+package br.com.rest.negociacao;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

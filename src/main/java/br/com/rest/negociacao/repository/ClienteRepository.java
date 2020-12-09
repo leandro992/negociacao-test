@@ -1,6 +1,6 @@
-package br.com.rest.builders.negociacao.repository;
+package br.com.rest.negociacao.repository;
 
-import br.com.rest.builders.negociacao.model.Cliente;
+import br.com.rest.negociacao.model.Cliente;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

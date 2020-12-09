@@ -1,11 +1,11 @@
-package br.com.rest.builders.negociacao.service;
+package br.com.rest.negociacao.service;
 
 
-import br.com.rest.builders.negociacao.model.Cliente;
-import br.com.rest.builders.negociacao.model.FormaPagamento;
-import br.com.rest.builders.negociacao.model.dto.ClienteRequestDTO;
-import br.com.rest.builders.negociacao.model.dto.ClienteResponseDTO;
-import br.com.rest.builders.negociacao.repository.ClienteRepository;
+import br.com.rest.negociacao.model.Cliente;
+import br.com.rest.negociacao.model.FormaPagamento;
+import br.com.rest.negociacao.model.dto.ClienteRequestDTO;
+import br.com.rest.negociacao.model.dto.ClienteResponseDTO;
+import br.com.rest.negociacao.repository.ClienteRepository;
 
 import org.springframework.beans.BeanUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,20 +24,21 @@ public class ClienteService {
 
 
     @Autowired
-    private ClienteRepository clienteRepository;
+    private  ClienteRepository clienteRepository;
+
 
     public List<ClienteResponseDTO> list(Pageable page) {
         List<ClienteResponseDTO> listResponse = new ArrayList<>();
-        ClienteResponseDTO responseDTO = new ClienteResponseDTO();
-        List<Cliente> response = clienteRepository.findAll(page).getContent();
+        ClienteResponseDTO responseDTO;
+        List<Cliente> clienteList = clienteRepository.findAll(page).getContent();
 
-        for (Cliente c : response) {
+        for (Cliente cliente : clienteList) {
             responseDTO = new ClienteResponseDTO();
-            responseDTO.setCpf(c.getCpf());
-            responseDTO.setDataNascimento(c.getDataNascimento());
-            responseDTO.setNome(c.getNome());
-            responseDTO.setId(c.getId());
-            Period idade = Period.between(c.getDataNascimento(), LocalDate.now());
+            responseDTO.setCpf(cliente.getCpf());
+            responseDTO.setDataNascimento(cliente.getDataNascimento());
+            responseDTO.setNome(cliente.getNome());
+            responseDTO.setId(cliente.getId());
+            Period idade = Period.between(cliente.getDataNascimento(), LocalDate.now());
             responseDTO.setIdade(String.valueOf(idade.getYears()));
             listResponse.add(responseDTO);
         }
@@ -74,8 +75,8 @@ public class ClienteService {
 
         if (cliente1.isPresent()) {
             BeanUtils.copyProperties(cliente, cliente1.get(), "id");
-            Cliente response = clienteRepository.save(cliente1.get());
-            return ResponseEntity.ok(response);
+            clienteRepository.save(cliente1.get());
+            return ResponseEntity.ok().build();
         }
         return ResponseEntity.notFound().build();
     }
